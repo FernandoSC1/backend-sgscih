@@ -6,11 +6,10 @@ const pacienteSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    // NOVO CAMPO: numeroZeroDia
     numeroZeroDia: {
         type: String,
         required: true,
-        unique: true, // Garante que cada numeroZeroDia seja único
+        unique: true,
         trim: true
     },
     dataNascimento: {
@@ -21,9 +20,9 @@ const pacienteSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    dataAlta: { // Campo opcional para registrar a data de alta
+    dataAlta: {
         type: Date,
-        default: null // Valor padrão é null
+        default: null
     },
     leito: {
         type: String,
@@ -33,9 +32,16 @@ const pacienteSchema = new mongoose.Schema({
     setor: {
         type: String,
         required: true,
+    },
+    // NOVO CAMPO: Adicionado o campo sexo
+    sexo: {
+        type: String,
+        enum: ['Masculino', 'Feminino', 'Outro'],
+        required: false, // Pode ser opcional dependendo da sua necessidade
+        trim: true,
     }
 }, {
-    timestamps: true // Adiciona createdAt e updatedAt automaticamente
+    timestamps: true
 });
 
 const Paciente = mongoose.model('Paciente', pacienteSchema);
