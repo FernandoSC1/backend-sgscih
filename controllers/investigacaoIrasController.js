@@ -1,7 +1,7 @@
 
 // controllers/investigacaoIrasController.js
 
-import InvestigacaoIRAS from '../models/InvestigacaoIRAS.js';
+import InvestigacaoIRAS from '../models/investigacaoIras.js';
 
 // @desc Cria um novo formulário de investigação de IRAS
 // @route POST /api/investigacao-iras
