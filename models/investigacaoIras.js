@@ -34,4 +34,5 @@ const investigacaoIrasSchema = new mongoose.Schema({
   timestamps: true // Para registrar a data de criação e atualização do formulário
 });
 
+
 export default mongoose.model('InvestigacaoIRAS', investigacaoIrasSchema);
