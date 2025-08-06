@@ -7,10 +7,12 @@ import {
     getRelatorioTransferencia,
     updatePaciente,
     getTransferenciaReport,
+    verificarLeito,
 } from '../controllers/pacienteController.js';
 
 const router = express.Router();
 
+router.get('/leito/verificar', verificarLeito);
 router.post('/', createPaciente);
 router.get('/', getAllPacientes);
 router.get('/:id', getPacienteById);

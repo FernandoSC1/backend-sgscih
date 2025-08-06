@@ -12,6 +12,12 @@ const pacienteSchema = new mongoose.Schema({
         unique: true,
         trim: true
     },
+    sexo: {
+        type: String,
+        enum: ['Masculino', 'Feminino'],
+        required: true, // Pode ser opcional dependendo da sua necessidade
+        trim: true,
+    },
     dataNascimento: {
         type: Date,
         required: true
@@ -33,13 +39,7 @@ const pacienteSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    // NOVO CAMPO: Adicionado o campo sexo
-    sexo: {
-        type: String,
-        enum: ['Masculino', 'Feminino', 'Outro'],
-        required: false, // Pode ser opcional dependendo da sua necessidade
-        trim: true,
-    }
+    
 }, {
     timestamps: true
 });

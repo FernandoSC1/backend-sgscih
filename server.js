@@ -16,8 +16,7 @@ dotenv.config();
 connectDB();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
-const HOST = process.env.HOST || 'localhost';
+
 
 // Middlewares
 app.use(cors());
@@ -30,7 +29,9 @@ app.use('/api/culturas', culturaRoutes);
 app.use('/api/antimicrobianos', antimicrobianoRoutes);
 app.use('/api/investigacao-iras', investigacaoIrasRoutes);
 
+
+const PORT = process.env.PORT || 5000;
 // Iniciar o servidor
 app.listen(PORT, () => {
-    console.log(`Servidor rodando em http://${HOST}:${PORT}`);
+    console.log(`Servidor rodando em ${PORT}`);
 });

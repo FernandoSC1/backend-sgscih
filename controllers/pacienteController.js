@@ -7,7 +7,7 @@ import Antimicrobiano from '../models/Antimicrobiano.js';
 // @route   POST /api/pacientes
 // @access  Public
 export const createPaciente = async (req, res) => {
-    try {
+        try {
         const novoPaciente = new Paciente(req.body);
         await novoPaciente.save();
         res.status(201).json(novoPaciente);
@@ -25,7 +25,7 @@ export const createPaciente = async (req, res) => {
 // @access  Public
 export const getAllPacientes = async (req, res) => {
     try {
-        const { nome, numeroZeroDia, dataAdmissaoInicio, dataAdmissaoFim, status, setor } = req.query; // <-- Adicionado 'setor' aqui
+        const { nome, numeroZeroDia, sexo, dataAdmissaoInicio, dataAdmissaoFim, status, setor } = req.query; // <-- Adicionado 'setor' aqui
         let query = {}; // Objeto de filtro para o Mongoose
 
         // Filtro por Nome (busca parcial e case-insensitive)
@@ -36,6 +36,10 @@ export const getAllPacientes = async (req, res) => {
         // Filtro por Número Zero Dia (correspondência exata)
         if (numeroZeroDia) {
             query.numeroZeroDia = numeroZeroDia;
+        }
+
+        if (sexo) {
+            query.sexo = sexo;
         }
 
         // Filtro por Período de Data de Admissão
@@ -98,7 +102,7 @@ export const getPacienteById = async (req, res) => {
 // @route   PUT /api/pacientes/:id
 // @access  Public
 export const updatePaciente = async (req, res) => {
-    try {
+        try {
         const pacienteAtualizado = await Paciente.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
         if (!pacienteAtualizado) {
             return res.status(404).json({ message: 'Paciente não encontrado.' });
@@ -200,4 +204,50 @@ export const getRelatorioTransferencia = async (req, res) => {
         console.error('Erro ao gerar relatório de transferência:', error);
         res.status(500).json({ message: error.message });
     }
+};
+
+// NOVO CONTROLADOR PARA VERIFICAR DISPONIBILIDADE DO LEITO
+// @desc    Verifica se um leito está ocupado por um paciente ativo
+// @route   GET /api/pacientes/leito/verificar?leito=LEITO_NUM&pacienteId=ID_OPCIONAL
+// @access  Public
+export const verificarLeito = async (req, res) => {
+    try {
+        const { leito, pacienteId } = req.query;
+
+        if (!leito) {
+            return res.status(400).json({ message: 'Número do leito não fornecido.' });
+        }
+
+        // Critério de busca: leito correspondente E paciente sem data de alta (ativo)
+        const query = {
+            leito: leito,
+            dataAlta: { $in: [null, ''] }
+        };
+
+        // Se estivermos editando um paciente, devemos excluir ele mesmo da busca.
+        // Isso permite salvar o paciente com o seu próprio leito.
+        if (pacienteId) {
+            query._id = { $ne: pacienteId }; // $ne = Not Equal (Diferente de)
+        }
+
+        const pacienteOcupando = await Paciente.findOne(query);
+
+        if (pacienteOcupando) {
+            // Leito está ocupado por outro paciente
+            return res.json({
+                disponivel: false,
+                paciente: {
+                    nome: pacienteOcupando.nome,
+                    numeroZeroDia: pacienteOcupando.numeroZeroDia
+                }
+            });
+        }
+
+        // Leito está disponível
+        res.json({ disponivel: true });
+
+    } catch (error) {
+        console.error('Erro ao verificar leito:', error);
+        res.status(500).json({ message: 'Erro interno do servidor.' });
+    }
 };
