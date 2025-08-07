@@ -1,4 +1,4 @@
-// models/InvestigacaoIRAS.js
+// models/InvestigacaoIras.js
 
 import mongoose from 'mongoose';
 
@@ -34,4 +34,4 @@ const investigacaoIrasSchema = new mongoose.Schema({
   timestamps: true // Para registrar a data de criação e atualização do formulário
 });
 
-export default mongoose.model('InvestigacaoIRAS', investigacaoIrasSchema);
+export default mongoose.model('InvestigacaoIras', investigacaoIrasSchema);
