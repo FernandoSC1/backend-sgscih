@@ -19,12 +19,20 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const HOST = process.env.HOST || '0.0.0.0';
 
-// --- CONFIGURAÇÃO DE CORS PARA PRODUÇÃO ---
-// Substitua 'https://seu-frontend.vercel.app' pela URL real do seu app na Vercel
-const whitelist = [process.env.FRONTEND_URL, 'http://localhost:3000'];
+// --- CONFIGURAÇÃO DE CORS PARA PRODUÇÃO (COM DEBUG) ---
+const whitelist = [];
+if (process.env.FRONTEND_URL) {
+    whitelist.push(process.env.FRONTEND_URL);
+}
+// Adiciona o localhost para desenvolvimento local
+whitelist.push('http://localhost:3000');
+
 
 const corsOptions = {
   origin: function (origin, callback) {
+    // Adiciona um log para vermos a origem da requisição e a whitelist
+    console.log(`CORS Check: Origin='${origin}', Whitelist=${JSON.stringify(whitelist)}`);
+
     if (whitelist.indexOf(origin) !== -1 || !origin) {
       // Permite a requisição se a origem estiver na whitelist ou se for a mesma origem (ex: Postman)
       callback(null, true);
