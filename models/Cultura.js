@@ -6,6 +6,8 @@ const culturaSchema = new mongoose.Schema({
     dataColeta: { type: Date, required: true },
     dataResultado: { type: Date },
     resultado: { type: String },
+}, {
+    timestamps: true // <-- ADICIONAR ESTA LINHA
 });
 
 export default mongoose.model('Cultura', culturaSchema);

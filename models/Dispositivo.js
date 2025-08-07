@@ -18,6 +18,8 @@ const dispositivoSchema = new mongoose.Schema({
         dataInsercao: { type: Date },
         dataRemocao: { type: Date },
     },
+}, {
+    timestamps: true // <-- ADICIONAR ESTA LINHA
 });
 
 export default mongoose.model('Dispositivo', dispositivoSchema);

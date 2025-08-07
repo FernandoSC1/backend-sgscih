@@ -1,3 +1,4 @@
+// server.js
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -9,6 +10,7 @@ import dispositivoRoutes from './routes/dispositivoRoutes.js';
 import culturaRoutes from './routes/culturaRoutes.js';
 import antimicrobianoRoutes from './routes/antimicrobianoRoutes.js';
 import investigacaoIrasRoutes from './routes/investigacaoIrasRoutes.js';
+import painelGestaoRoutes from './routes/painelGestaoRoutes.js'; // NOVO: Importe as rotas do painel
 
 dotenv.config();
 
@@ -16,7 +18,7 @@ dotenv.config();
 connectDB();
 
 const app = express();
-
+const PORT = process.env.PORT || 5000;
 
 // Middlewares
 app.use(cors());
@@ -27,10 +29,9 @@ app.use('/api/pacientes', pacienteRoutes);
 app.use('/api/dispositivos', dispositivoRoutes);
 app.use('/api/culturas', culturaRoutes);
 app.use('/api/antimicrobianos', antimicrobianoRoutes);
-app.use('/api/investigacao-iras', investigacaoIrasRoutes);
+app.use('/api/investigacaoIras', investigacaoIrasRoutes);
+app.use('/api/painel', painelGestaoRoutes); // NOVO: Registre as rotas do painel
 
-
-const PORT = process.env.PORT || 5000;
 // Iniciar o servidor
 app.listen(PORT, () => {
     console.log(`Servidor rodando em ${PORT}`);

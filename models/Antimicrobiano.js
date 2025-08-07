@@ -1,3 +1,4 @@
+// models/Antimicrobiano.js
 import mongoose from 'mongoose';
 
 const antimicrobianoSchema = new mongoose.Schema({
@@ -7,6 +8,8 @@ const antimicrobianoSchema = new mongoose.Schema({
     fimTratamento: { type: Date },
     houveTroca: { type: Boolean, default: false },
     prorrogacaoPrescricao: { type: Boolean, default: false },
+}, {
+    timestamps: true // <-- ADICIONAR ESTA LINHA
 });
 
 export default mongoose.model('Antimicrobiano', antimicrobianoSchema);
