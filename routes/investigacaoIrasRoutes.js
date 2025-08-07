@@ -1,10 +1,9 @@
-// routes/investigacaoIrasRoutes.js
-
+// backend/routes/investigacaoIrasRoutes.js
 import express from 'express';
 import {
   createInvestigacaoIras,
   getInvestigacaoIrasByNumeroRegistro,
-} from '../controllers/investigacaoIrasController.js';
+} from '../controllers/investigacaoIrasController.js'; // Garante que o nome do controller está correto
 
 const router = express.Router();
 
