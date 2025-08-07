@@ -31,8 +31,6 @@ whitelist.push('http://localhost:3000');
 const corsOptions = {
   origin: function (origin, callback) {
     // Adiciona um log para vermos a origem da requisição e a whitelist
-    console.log(`CORS Check: Origin='${origin}', Whitelist=${JSON.stringify(whitelist)}`);
-
     if (whitelist.indexOf(origin) !== -1 || !origin) {
       // Permite a requisição se a origem estiver na whitelist ou se for a mesma origem (ex: Postman)
       callback(null, true);
