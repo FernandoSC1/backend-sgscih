@@ -6,7 +6,6 @@ import Dispositivo from '../models/Dispositivo.js';
 import InvestigacaoIRAS from '../models/investigacaoIras.js';
 import mongoose from 'mongoose';
 
-// ... (as funções getAtualizacoesDiarias e getUsoAntimicrobianos permanecem as mesmas) ...
 export const getAtualizacoesDiarias = async (req, res) => {
     try {
         const hoje = new Date();
@@ -138,10 +137,6 @@ export const getUsoAntimicrobianos = async (req, res) => {
     }
 };
 
-
-// =======================================================
-// LÓGICA PARA A TERCEIRA TELA: INVESTIGAÇÕES DE IRAS (ATUALIZADO)
-// =======================================================
 export const getInvestigacoesAtivas = async (req, res) => {
     try {
         const investigacoes = await InvestigacaoIRAS.aggregate([
@@ -153,8 +148,8 @@ export const getInvestigacoesAtivas = async (req, res) => {
                     as: 'pacienteInfo'
                 }
             },
-            // CORREÇÃO: Adicionada uma etapa para garantir que apenas investigações
-            // com um paciente correspondente prossigam. Isso torna a consulta mais segura.
+            // CORREÇÃO: Garante que a consulta não falhe se uma investigação
+            // não encontrar um paciente correspondente.
             {
                 $match: {
                     "pacienteInfo": { $ne: [] }
@@ -188,7 +183,7 @@ export const getInvestigacoesAtivas = async (req, res) => {
 
         res.status(200).json(investigacoes);
     } catch (error) {
-        console.error("Erro na agregação de investigações:", error); // Adiciona um log mais detalhado no servidor
+        console.error("Erro na agregação de investigações:", error);
         res.status(500).json({ message: 'Erro ao buscar investigações de IRAS', error: error.message });
     }
 };
